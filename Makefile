@@ -5,7 +5,9 @@ help: FORCE		## Show this help
 
 .PHONY: run
 run: src/gtdapp FORCE  ## Run gtdapp
-	poetry run python3 src/gtdapp/main.py
+	export FLASK_ENV=development &&\
+	export FLASK_APP=src/gtdapp/app &&\
+	flask run
 
 .PHONY: FORCE
 FORCE:
