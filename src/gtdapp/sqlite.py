@@ -24,3 +24,10 @@ conn.commit()
 print("Records created successfully")
 
 conn.close()
+
+def get_entries(conn):
+    cursor = conn.execute("SELECT id, title, description from ITEM")
+    desc = cursor.description
+    column_names = [col[0] for col in desc]
+    data = [dict(zip(column_names, row)) for row in cursor.fetchall()]
+    return data
