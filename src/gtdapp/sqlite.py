@@ -3,10 +3,8 @@ from os.path import exists
 
 
 
-conn = sqlite3.connect("todo.db")
-print("Opened database successfully")
-
 if not exists("todo.db"):
+    conn = sqlite3.connect("todo.db")
     conn.execute("""CREATE TABLE ITEM
     (ID INT PRIMARY KEY     NOT NULL,
     TITLE           TEXT    NOT NULL,
@@ -21,6 +19,9 @@ if not exists("todo.db"):
       VALUES (3, 'piyo', 'piyopiyo')");
     conn.commit()
     print("Records created successfully")
+
+conn = sqlite3.connect("todo.db")
+print("Opened database successfully")
 
 conn.close()
 
