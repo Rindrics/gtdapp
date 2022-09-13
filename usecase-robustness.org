@@ -1,0 +1,71 @@
+#+Use Cases of GTD Application
+
+* Collect
+** Normal course
+The user presses the "Collect" button on the given page.
+System shows a popup with text field.
+User enters the title of the stuff and send return.
+System confirms that the title is not too long and does not contain forbidden characters.
+System creates stuff and add it to Inbox.
+The title filled in the field gets sucked into the "Inbox" link and dissapears.
+** Alternertive courses
+*** Title contains forbidden character
+System informs the tells user of the failure and the reason: the title contained a character forbidden.
+
+#+begin_src plantuml :file robustness-collect.png
+  @startuml
+  skinparam handwritten true
+  skinparam usecase {
+    BorderColor black
+  }
+  skinparam actor {
+    BackgroundColor lightgray
+    BorderColor black
+  }
+  skinparam boundary{
+    BackgroundColor lightgray
+    BorderColor black
+  }
+  skinparam control {
+    BackgroundColor lightgray
+    BorderColor black
+  }
+  skinparam entity {
+    BackgroundColor lightgray
+    BorderColor black
+  }
+  skinparam ArrowColor Black
+
+  usecase "Collect stuff"
+
+  actor "Logged-in user" <<Human>> as user
+  boundary "Given page" as given
+  boundary "Collect popup" as popup
+  control "Title length OK?" as checklength
+  control "No forbidden characters?" as checkforbidden
+  control "Create stuff" as create
+  control "Create reject message" as createreject #DD9999
+  control "Show reject message" as showreject #DD9999
+  control "Register stuff to Inbox" as register
+  control "Clear text field" as clear
+  entity Inbox
+
+  user -r-> given: Press "Collect" button
+  given -d-> popup: Show "Collect" popup
+  user -r-> popup: Enter title of the stuff\n and send return
+  popup -> checklength
+  checklength -d-> checkforbidden: Yes
+  checkforbidden -d-> create: Yes
+  checklength -d-> createreject
+  checkforbidden -d-> createreject
+  showreject <- createreject
+  showreject -u-> popup: Wait for the next
+  create -d-> register
+  register -r-> Inbox
+  register -d-> clear
+  clear -l-> popup: Wait for the next
+  @enduml
+#+end_src
+
+#+RESULTS:
+[[file:robustness-collect.png]]
