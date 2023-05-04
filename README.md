@@ -74,4 +74,60 @@ This app can scale out components that restrict the overall throughput.
   - Between backend services: gRPC
   - Between backend and frondend services: GraphQL
 
+## Architecture
+
+The architecture of this application is Microservice Architecture
+
+```mermaid
+graph TB
+    User[User]-->Frontend
+    Frontend[Web and Mobile Frontend]-->APIGATEWAY
+    APIGATEWAY[API Gateway] --> IDP
+    IDP --> APIGATEWAY
+    APIGATEWAY --> JWT
+    JWT
+
+    APIGATEWAY --> NGINX
+    NGINX[Reverse proxy] --> Checklist
+    NGINX --> Clarify
+    Clarify --> Checklist
+    Clarify --> Inbox
+    Clarify --> Reference
+    Clarify --> Project
+    Clarify --> Calendar
+    Project --> Task
+    NGINX --> Task
+    NGINX --> Project
+    NGINX --> Reference
+    NGINX --> Review
+    Review --> Focus
+    NGINX --> Focus
+    NGINX --> Inbox
+    Project --> Focus
+
+    Clarify --> Messaging
+    Messaging --> Inbox
+    Messaging --> Project
+    Messaging --> Task
+
+    classDef services fill:#2288f9,stroke:#333,stroke-width:1px;
+    class IDP,Frontend,Checklist,Clarify,Inbox,Reference,Project,Task,Review,Focus,Calendar services;
+    classDef tools fill:#858585,stroke:#333,stroke-width:1px;
+    class APIGATEWAY,NGINX,JWT,Messaging tools
+```
+
+
+| Name of service | Responsibility |
+| --- | --- |
+| Inbox | CRUD of Inbox items |
+| Clarify | Assignment of each Inbox item to single category (e.g.: 'Projects', 'References', 'Someday/maybe') |
+| Checklist | CRUD of user-defined checklists |
+| Reference | CRUD of reference items |
+| Calendar | Integration with Google Calendar |
+| Project | CRUD of projects and management of their child tasks; Collaboration management (e.g.: user invitation, access management) |
+| Task | CRUD of tasks; Collaboration management (e.g.: task assignment) |
+| Review | CRUD of reviews |
+| Focus | CRUD of Levels of Focus and management of relation between each level and project |
+| IDP | Management of signup, login and access control |
+
 Link to Miro board: https://miro.com/app/board/uXjVPYQe-Ls=/?share_link_id=17090475310
