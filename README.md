@@ -131,4 +131,3 @@ graph TB
 | Focus | CRUD of Levels of Focus and management of relation between each level and project |
 | IDP | Management of signup, login and access control |
 
-Link to Miro board: https://miro.com/app/board/uXjVPYQe-Ls=/?share_link_id=17090475310
