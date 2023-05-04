@@ -70,7 +70,7 @@ This app can scale out components that restrict the overall throughput.
 - Middlewares:
   - RabbitMQ
   - PosgreSQL
-  - NGINX
+  - BackBalancer
 - Networking:
   - Between backend services: gRPC
   - Between backend and frondend services: GraphQL
@@ -82,39 +82,39 @@ The architecture of this application is Microservice Architecture
 ```mermaid
 graph TB
     User[User]-->Frontend
-    Frontend[Web and Mobile Frontend]-->APIGATEWAY
-    APIGATEWAY[API Gateway] --> IDP
-    IDP --> APIGATEWAY
-    APIGATEWAY --> JWT
+    Frontend[Web and Mobile Frontend]-->RouteMaster
+    RouteMaster --> IDP
+    IDP --> RouteMaster
+    RouteMaster --> JWT
     JWT
 
-    APIGATEWAY --> NGINX
-    NGINX[Reverse proxy] --> Checklist
-    NGINX --> Clarify
+    RouteMaster --> BackBalancer
+    BackBalancer --> Checklist
+    BackBalancer --> Clarify
     Clarify --> Checklist
     Clarify --> Inbox
     Clarify --> Reference
     Clarify --> Project
     Clarify --> Calendar
     Project --> Task
-    NGINX --> Task
-    NGINX --> Project
-    NGINX --> Reference
-    NGINX --> Review
+    BackBalancer --> Task
+    BackBalancer --> Project
+    BackBalancer --> Reference
+    BackBalancer --> Review
     Review --> Focus
-    NGINX --> Focus
-    NGINX --> Inbox
+    BackBalancer --> Focus
+    BackBalancer --> Inbox
     Project --> Focus
 
-    Clarify --> Messaging
-    Messaging --> Inbox
-    Messaging --> Project
-    Messaging --> Task
+    Clarify --> ClarifyBroker
+    ClarifyBroker --> Inbox
+    ClarifyBroker --> Project
+    ClarifyBroker --> Task
 
     classDef services fill:#2288f9,stroke:#333,stroke-width:1px;
-    class IDP,Frontend,Checklist,Clarify,Inbox,Reference,Project,Task,Review,Focus,Calendar services;
+    class RouteMaster,BackBalancer,IDP,Frontend,Checklist,Clarify,ClarifyBroker,Inbox,Reference,Project,Task,Review,Focus,Calendar services;
     classDef tools fill:#858585,stroke:#333,stroke-width:1px;
-    class APIGATEWAY,NGINX,JWT,Messaging tools
+    class JWT tools
 ```
 
 
