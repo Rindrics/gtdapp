@@ -58,4 +58,20 @@ This app can scale out components that restrict the overall throughput.
   - Undo/redo functionality
   - Sorting by specified columns in each list
 
+## Technical Stack
+
+- Cloud Provider: Oracle Cloud
+- Application Runtime Platform: Kubernetes
+- CI/CD: GitHub Actions
+- Programming Languages (Frameworks):
+  - Backend: Rust
+  - Frontend: TypeScript (React)
+- Middlewares:
+  - RabbitMQ
+  - PosgreSQL
+  - NGINX
+- Networking:
+  - Between backend services: gRPC
+  - Between backend and frondend services: GraphQL
+
 Link to Miro board: https://miro.com/app/board/uXjVPYQe-Ls=/?share_link_id=17090475310
