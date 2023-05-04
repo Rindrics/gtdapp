@@ -24,6 +24,7 @@ The users of the app:
 ### Other functions
 
 The user of the app
+- can use the app from web browsers and as a mobile app on various devices (desktop, tablet, and mobile)
 - can log in to the app using Social Auth (e.g., Google, Facebook, Twitter)
 - can integrate the app's calendar with their Google Calendar
 - can use the app from web browsers on various devices (desktop, tablet, and mobile)
