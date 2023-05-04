@@ -5,9 +5,9 @@
 ### The five important use cases
 
 The users of the app:
-- can capture stuff into Inbox
-- can clarify captured stuff quickly
-- can organize clarified items into the right places:
+1. can capture stuff into Inbox
+2. can clarify captured stuff quickly
+3. can organize clarified items into the right places:
   - Trash
   - Someday/maybe
   - Reference
@@ -15,8 +15,8 @@ The users of the app:
   - Waiting for
   - Calendar
   - Next action
-- can reflect their actual situation to the app by performing Daily, Weekly, and Monthly reviews
-- can engage in what they should do using:
+4. can reflect their actual situation to the app by performing Daily, Weekly, and Monthly reviews
+5. can engage in what they should do using:
   - "Next action" list
   - Calendar
   - Levels of Focus
