@@ -65,7 +65,7 @@ This app can scale out components that restrict the overall throughput.
 - Application Runtime Platform: Kubernetes
 - CI/CD: GitHub Actions
 - Programming Languages (Frameworks):
-  - Backend: Rust
+  - Backend: Go
   - Frontend: TypeScript (React)
 - Middlewares:
   - RabbitMQ
