@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package gtd.clarify;
+
+import "common.proto";
+
+service Clarify {
+  rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
+}
