@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package gtd.checklist;
+
+import "common.proto";
+
+service Checklist {
+  rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
+}
