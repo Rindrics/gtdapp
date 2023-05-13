@@ -1,5 +1,5 @@
-COMMON_PROTODIR=api/common/proto
 PROTODIR=api
+COMMON_PROTODIR=common/proto
 
 .PHONY: gen
 gen:
