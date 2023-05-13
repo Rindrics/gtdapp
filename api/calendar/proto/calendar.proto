@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package gtd.calendar;
+
+option go_package = "api/gen/api";
+
+import "common.proto";
+
+service Calendar {
+  rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
+}

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package gtd.routemaster;
+
+option go_package = "api/gen/api";
+
+import "common.proto";
+
+message RouteRequest {
+    string service_name = 1;
+    string method_name = 2;
+    bytes payload = 3;
+}
+
+message RouteResponse {
+    bytes payload = 1;
+    repeated string traversed_services = 2;
+}
+
+service RouteMaster {
+    rpc Route(RouteRequest) returns (RouteResponse);
+
+    rpc GetServiceName(common.ServiceNameRequest) returns (common.ServiceNameResponse);
+}

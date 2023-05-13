@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package gtd.task;
+
+option go_package = "api/gen/api";
+
+import "common.proto";
+
+service Task {
+  rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
+}

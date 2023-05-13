@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package gtd.idp;
+
+import "common.proto";
+
+option go_package = "api/gen/api";
+
+service IdentityProvider {
+  rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
+}
