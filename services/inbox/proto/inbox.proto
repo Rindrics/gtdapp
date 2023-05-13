@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package gtd.inbox;
 
-option go_package = "api/gen/api";
+option go_package = "internal/";
 
 import "common.proto";
 import "google/protobuf/timestamp.proto";
