@@ -5,7 +5,28 @@ package gtd.inbox;
 option go_package = "api/gen/api";
 
 import "common.proto";
+import "google/protobuf/timestamp.proto";
+
+message Stuff {
+  int64 id = 1;
+  string title = 2;
+  string description = 3;
+  bool is_deleted = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message CollectRequest {
+  string title = 1;
+  string description = 2;
+}
+
+message CollectResponse {
+  Stuff stuff = 1;
+}
 
 service Inbox {
   rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
+
+  rpc Collect (CollectRequest) returns (Stuff) {}
 }
