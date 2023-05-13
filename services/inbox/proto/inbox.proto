@@ -45,6 +45,14 @@ message UpdateStuffResponse {
   Stuff stuff = 1;
 }
 
+message DeleteStuffRequest {
+  int64 id = 1;
+}
+
+message DeleteStuffResponse {
+  Stuff stuff = 1;
+}
+
 service Inbox {
   rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
 
@@ -53,4 +61,6 @@ service Inbox {
   rpc GetStuffList (GetStuffListRequest) returns (GetStuffListResponse) {}
 
   rpc UpdateStuff (UpdateStuffRequest) returns (Stuff) {}
+
+  rpc DeleteStuff (DeleteStuffRequest) returns (DeleteStuffResponse) {}
 }
