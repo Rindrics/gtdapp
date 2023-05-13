@@ -35,10 +35,22 @@ message GetStuffListResponse {
   int64 total = 2;
 }
 
+message UpdateStuffRequest {
+  int64 id = 1;
+  string title = 2;
+  string description = 3;
+}
+
+message UpdateStuffResponse {
+  Stuff stuff = 1;
+}
+
 service Inbox {
   rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
 
   rpc Collect (CollectRequest) returns (Stuff) {}
 
   rpc GetStuffList (GetStuffListRequest) returns (GetStuffListResponse) {}
+
+  rpc UpdateStuff (UpdateStuffRequest) returns (Stuff) {}
 }
