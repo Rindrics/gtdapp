@@ -6,6 +6,7 @@ import (
 	"net"
 
 	"github.com/Rindrics/gtdapp-spec/services/inbox/internal"
+	_ "github.com/mattn/go-sqlite3"
 	"google.golang.org/grpc"
 )
 
