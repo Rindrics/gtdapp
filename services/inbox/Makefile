@@ -13,3 +13,7 @@ gen:
 	--go-grpc_out=$$out_dir \
 	--go-grpc_opt=paths=source_relative \
 	$(COMMON_PROTODIR)/*.proto
+
+.PHONY: build
+build: cmd internal
+	go build -o app ./cmd
