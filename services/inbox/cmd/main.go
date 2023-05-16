@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net"
 
@@ -23,11 +24,13 @@ func main() {
 	}
 	internal.RegisterInboxServer(grpcServer, inboxService)
 
-	listenPort, err := net.Listen("tcp", ":50051")
+	port := ":50051"
+	listenPort, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
+	fmt.Printf("Server is starting on port %s\n", port)
 	err = grpcServer.Serve(listenPort)
 	if err != nil {
 		log.Fatalf("failed to serve: %v", err)
