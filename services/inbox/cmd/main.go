@@ -9,6 +9,7 @@ import (
 	"github.com/Rindrics/gtdapp-spec/services/inbox/internal"
 	_ "github.com/mattn/go-sqlite3"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -23,6 +24,7 @@ func main() {
 		DB: db,
 	}
 	internal.RegisterInboxServer(grpcServer, inboxService)
+	reflection.Register(grpcServer)
 
 	port := ":50051"
 	listenPort, err := net.Listen("tcp", port)
