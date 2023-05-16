@@ -5,15 +5,10 @@ package gtd.inbox;
 option go_package = "internal/";
 
 import "common.proto";
-import "google/protobuf/timestamp.proto";
 
 message Stuff {
   int64 id = 1;
-  string title = 2;
-  string description = 3;
-  bool is_deleted = 4;
-  google.protobuf.Timestamp created_at = 5;
-  google.protobuf.Timestamp updated_at = 6;
+  gtd.common.Item item = 2;
 }
 
 message CollectRequest {
