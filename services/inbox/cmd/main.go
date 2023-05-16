@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	"github.com/Rindrics/gtdapp-spec/services/inbox/internal"
+	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -15,7 +17,9 @@ import (
 func main() {
 	grpcServer := grpc.NewServer()
 
-	db, err := sql.Open("sqlite3", "./gtdapp.db")
+	dbDriver := os.Getenv("DB_DRIVER")
+	dbSource := os.Getenv("DB_SOURCE")
+	db, err := sql.Open(dbDriver, dbSource)
 	if err != nil {
 		log.Fatalf("failed to open database: %v", err)
 	}
