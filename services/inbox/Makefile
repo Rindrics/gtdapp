@@ -21,3 +21,12 @@ build: cmd internal
 .PHONY: run
 run: cmd internal
 	go run ./cmd
+
+.PHONY: ls
+ls:
+	grpc_cli ls localhost:50051 gtd.inbox.Inbox -l
+
+.PHONY: call
+call:
+	grpc_cli call localhost:50051 gtd.inbox.Inbox.Collect \
+	'title: "Hello, world" description: "Greet to the world"'
