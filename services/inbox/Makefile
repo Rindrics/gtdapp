@@ -17,3 +17,7 @@ gen:
 .PHONY: build
 build: cmd internal
 	go build -o app ./cmd
+
+.PHONY: run
+run: cmd internal
+	go run ./cmd
