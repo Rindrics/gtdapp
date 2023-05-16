@@ -49,8 +49,6 @@ message DeleteStuffResponse {
 }
 
 service Inbox {
-  rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
-
   rpc Collect (CollectRequest) returns (Stuff) {}
 
   rpc GetStuffList (GetStuffListRequest) returns (GetStuffListResponse) {}

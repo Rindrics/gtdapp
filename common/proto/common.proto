@@ -6,14 +6,6 @@ option go_package = "internal/";
 
 import "google/protobuf/timestamp.proto";
 
-message Empty {}
-
-message ServiceNameRequest {}
-
-message ServiceNameResponse {
-    string service_name = 1;
-}
-
 message Item {
   string title = 1;
   string description = 2;
