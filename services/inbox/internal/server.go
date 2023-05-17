@@ -12,12 +12,10 @@ type InboxService struct {
 }
 
 func (s *InboxService) Collect(ctx context.Context, req *CollectRequest) (*Stuff, error) {
-	stuff := &Stuff{
-		Item: &Item{
-			Title:       req.Title,
-			Description: req.Description,
-		},
-	}
+	stuff := NewStuff(
+		req.Title,
+		req.Description,
+	)
 
 	repo := NewStuffRepository(s.DB)
 
