@@ -18,6 +18,10 @@ gen:
 build: cmd internal
 	go build -o app ./cmd
 
+.PHONY: test
+test: cmd internal test/
+	go test ./...
+
 .PHONY: run
 run: cmd internal
 	go run ./cmd
