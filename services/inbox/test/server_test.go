@@ -2,7 +2,6 @@ package test
 
 import (
 	"context"
-	"database/sql"
 	"testing"
 
 	"github.com/Rindrics/gtdapp-spec/services/inbox/internal"
@@ -11,10 +10,7 @@ import (
 )
 
 func TestCollect(t *testing.T) {
-	db, err := sql.Open("sqlite3", "./gtdapp.db")
-	if err != nil {
-		t.Fatalf("failed to open database: %v", err)
-	}
+	db := setupTestDB(t)
 	s := &internal.InboxService{DB: db}
 
 	ctx := context.Background()
