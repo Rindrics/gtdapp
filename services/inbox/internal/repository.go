@@ -4,10 +4,13 @@ import (
 	"database/sql"
 	"log"
 	"time"
+
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type StuffRepository interface {
 	Save(s *Stuff) (int64, error)
+	GetStuff(id int64) (*Stuff, error)
 }
 
 type stuffRepository struct {
@@ -47,4 +50,27 @@ func (r *stuffRepository) Save(s *Stuff) (int64, error) {
 	tx.Commit()
 
 	return id, nil
+}
+
+func (r *stuffRepository) GetStuff(id int64) (*Stuff, error) {
+	s := Stuff{
+		Item: &Item{},
+	}
+
+	row := r.db.QueryRow("SELECT id, title, description, created_at, updated_at FROM stuff WHERE id = ?", id)
+	if err := row.Err(); err != nil {
+		return nil, err
+	}
+
+	var createdAt, updatedAt time.Time
+	err := row.Scan(&s.Id, &s.Item.Title, &s.Item.Description, &createdAt, &updatedAt)
+	if err != nil {
+		log.Printf("failed to execute query: %v", err)
+		return nil, err
+	}
+
+	s.Item.CreatedAt = timestamppb.New(createdAt)
+	s.Item.UpdatedAt = timestamppb.New(updatedAt)
+
+	return &s, nil
 }

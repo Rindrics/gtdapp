@@ -29,3 +29,9 @@ func (s *InboxService) Collect(ctx context.Context, req *CollectRequest) (*Stuff
 
 	return stuff, nil
 }
+
+func (s *InboxService) GetStuff(ctx context.Context, req *GetStuffRequest) (*Stuff, error) {
+	repo := NewStuffRepository(s.DB)
+
+	return repo.GetStuff(req.Id)
+}

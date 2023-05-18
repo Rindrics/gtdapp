@@ -20,6 +20,10 @@ message CollectResponse {
   Stuff stuff = 1;
 }
 
+message GetStuffRequest {
+  int64 id = 1;
+}
+
 message GetStuffListRequest {
   int64 page = 1;
   int64 per_page = 2;
@@ -50,6 +54,8 @@ message DeleteStuffResponse {
 
 service Inbox {
   rpc Collect (CollectRequest) returns (Stuff) {}
+
+  rpc GetStuff (GetStuffRequest) returns (Stuff) {}
 
   rpc GetStuffList (GetStuffListRequest) returns (GetStuffListResponse) {}
 
