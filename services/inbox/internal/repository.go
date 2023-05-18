@@ -7,7 +7,7 @@ import (
 )
 
 type StuffRepository interface {
-	Save(s *Stuff) error
+	Save(s *Stuff) (int64, error)
 }
 
 type stuffRepository struct {
@@ -20,26 +20,31 @@ func NewStuffRepository(db *sql.DB) StuffRepository {
 	}
 }
 
-func (r *stuffRepository) Save(s *Stuff) error {
+func (r *stuffRepository) Save(s *Stuff) (int64, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
 		log.Fatalf("failed to begin transaction: %v", err)
-		return err
+		return -1, err
 	}
 
 	stmt, err := tx.Prepare("INSERT INTO stuff(title, description, created_at, updated_at) VALUES(?, ?, ?, ?)")
 	if err != nil {
 		log.Fatalf("failed to prepare statement: %v", err)
-		return err
+		return -1, err
 	}
 
-	_, err = stmt.Exec(s.Item.Title, s.Item.Description, s.Item.CreatedAt.AsTime().Format(time.RFC3339), s.Item.UpdatedAt.AsTime().Format(time.RFC3339))
+	result, err := stmt.Exec(s.Item.Title, s.Item.Description, s.Item.CreatedAt.AsTime().Format(time.RFC3339), s.Item.UpdatedAt.AsTime().Format(time.RFC3339))
 	if err != nil {
 		log.Fatalf("failed to execute statement: %v", err)
-		return err
+		return -1, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		log.Fatalf("failed to get last insert id: %v", err)
 	}
 
 	tx.Commit()
 
-	return nil
+	return id, nil
 }

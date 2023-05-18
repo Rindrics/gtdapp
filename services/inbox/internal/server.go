@@ -19,11 +19,13 @@ func (s *InboxService) Collect(ctx context.Context, req *CollectRequest) (*Stuff
 
 	repo := NewStuffRepository(s.DB)
 
-	err := repo.Save(stuff)
+	id, err := repo.Save(stuff)
 	if err != nil {
 		log.Fatalf("failed to save stuff: %v", err)
 		return nil, err
 	}
+
+	stuff.Id = id
 
 	return stuff, nil
 }

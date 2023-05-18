@@ -12,7 +12,8 @@ func TestSave(t *testing.T) {
 
 	repo := internal.NewStuffRepository(db)
 
-	err := repo.Save(internal.NewStuff("Test title", "Test description"))
+	id, err := repo.Save(internal.NewStuff("Test title", "Test description"))
 
 	assert.NoError(t, err, "failed to save stuff")
+	assert.Equal(t, int64(1), id)
 }
