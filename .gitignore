@@ -1,2 +1,5 @@
 **/*.pb.go
 .DS_Store
+app
+**/go-sqlite3
+.env
