@@ -77,3 +77,25 @@ func TestGetCollectedStuff(t *testing.T) {
 	assert.Equal(t, stuff.Item.Title, "Title 2")
 	assert.Equal(t, stuff.Item.Description, "Description 2")
 }
+
+func TestGetCollectedStuffList(t *testing.T) {
+	s := setupStuff(t)
+
+	ctx := context.Background()
+
+	stuffList, err := s.GetStuffList(ctx, &internal.GetStuffListRequest{
+		Page:    int64(2),
+		PerPage: int64(5),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, len(stuffList.Stuffs), 5)
+
+	expectedTitles := []string{"Title 6", "Title 7", "Title 8", "Title 9", "Title 10"}
+
+	for i, title := range expectedTitles {
+		assert.Equal(t, stuffList.Stuffs[i].Item.Title, title)
+	}
+}

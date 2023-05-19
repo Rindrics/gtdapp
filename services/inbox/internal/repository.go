@@ -11,6 +11,7 @@ import (
 type StuffRepository interface {
 	Save(s *Stuff) (int64, error)
 	GetStuff(id int64) (*Stuff, error)
+	GetStuffList(page int64, per_page int64) (*GetStuffListResponse, error)
 }
 
 type stuffRepository struct {
@@ -73,4 +74,37 @@ func (r *stuffRepository) GetStuff(id int64) (*Stuff, error) {
 	s.Item.UpdatedAt = timestamppb.New(updatedAt)
 
 	return &s, nil
+}
+
+func (r *stuffRepository) GetStuffList(page int64, per_page int64) (*GetStuffListResponse, error) {
+	stuffs := []*Stuff{}
+
+	rows, err := r.db.Query("SELECT id, title, description, created_at, updated_at FROM stuff ORDER BY updated_at DESC LIMIT ? OFFSET ?", per_page, (page-1)*per_page)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var s Stuff
+		s.Item = &Item{}
+		var createdAt, updatedAt time.Time
+		err = rows.Scan(&s.Id, &s.Item.Title, &s.Item.Description, &createdAt, &updatedAt)
+		if err != nil {
+			return nil, err
+		}
+
+		s.Item.CreatedAt = timestamppb.New(createdAt)
+		s.Item.UpdatedAt = timestamppb.New(updatedAt)
+		stuffs = append(stuffs, &s)
+	}
+
+	// Check for errors from iterating over rows.
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return &GetStuffListResponse{
+		Stuffs: stuffs,
+	}, nil
 }

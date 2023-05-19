@@ -35,3 +35,9 @@ func (s *InboxService) GetStuff(ctx context.Context, req *GetStuffRequest) (*Stu
 
 	return repo.GetStuff(req.Id)
 }
+
+func (s *InboxService) GetStuffList(ctx context.Context, req *GetStuffListRequest) (*GetStuffListResponse, error) {
+	repo := NewStuffRepository(s.DB)
+
+	return repo.GetStuffList(req.Page, req.PerPage)
+}
