@@ -30,7 +30,7 @@ ENVIRONMENTS = dev prd
 
 define rule_template
 .PHONY: infra-$1-$2
-infra-$1-$2: $(INFRA)
+infra-$2-$1: $(INFRA)
 	./script/$1_infra.sh infra $2
 endef
 $(foreach op,$(OPERATIONS),$(foreach env,$(ENVIRONMENTS),$(eval $(call rule_template,$(op),$(env)))))
