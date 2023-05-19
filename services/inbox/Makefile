@@ -20,7 +20,7 @@ build: cmd internal
 
 .PHONY: test
 test: cmd internal test/
-	go test ./...
+	go test ./test/...
 
 .PHONY: run
 run: cmd internal
