@@ -19,7 +19,7 @@ func TestSave(t *testing.T) {
 	assert.Equal(t, int64(1), id)
 }
 
-func TestGetStuff(t *testing.T) {
+func TestGetSavedStuff(t *testing.T) {
 	db := setupTestDB(t)
 
 	repo := internal.NewStuffRepository(db)
@@ -34,7 +34,7 @@ func TestGetStuff(t *testing.T) {
 	assert.Equal(t, id, gotStuff.Id)
 }
 
-func TestGetStuffList(t *testing.T) {
+func TestGetSavedStuffList(t *testing.T) {
 	db := setupTestDB(t)
 
 	repo := internal.NewStuffRepository(db)
