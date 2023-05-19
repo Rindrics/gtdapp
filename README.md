@@ -131,3 +131,14 @@ graph TB
 | Focus | CRUD of Levels of Focus and management of relation between each level and project |
 | IDP | Management of signup, login and access control |
 
+## How to Deploy Application
+
+This application runs on Kubernetes (k8s) cluster.
+
+### Deploying infrastructure
+
+Before deploying each micro service, provision k8s cluster first by running `make infra-{env}-apply`
+
+I configured two environments below:
+- 'dev': provisioned on local machine using [kind](https://kind.sigs.k8s.io/)
+- 'prd': TBD
