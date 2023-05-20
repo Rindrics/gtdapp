@@ -142,3 +142,7 @@ Before deploying each micro service, provision k8s cluster first by running `mak
 I configured two environments below:
 - 'dev': provisioned on local machine using [kind](https://kind.sigs.k8s.io/)
 - 'prd': TBD
+
+### Deploying Microservices
+
+You can deploy microservices by executing `make app-{env}-apply`
