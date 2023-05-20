@@ -135,6 +135,11 @@ graph TB
 
 This application runs on Kubernetes (k8s) cluster.
 
+#### Required Tools
+
+- [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl): to manage k8s resources
+- [sops](https://github.com/mozilla/sops): to encrypt/decrypt sensitive information
+
 ### Deploying infrastructure
 
 Before deploying each micro service, provision k8s cluster first by executing `make infra-{env}-apply`
