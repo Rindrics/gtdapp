@@ -24,13 +24,14 @@ gen:
 	done
 
 # -------
-INFRA=tffile/environment/infra
+LAYERS = infra app
 OPERATIONS = plan apply destroy
 ENVIRONMENTS = dev prd
 
 define rule_template
-.PHONY: infra-$1-$2
-infra-$2-$1: $(INFRA)
-	./script/$1_infra.sh infra $2
+.PHONY: $1-$2-$3
+$1-$3-$2: tffile/environment/$1
+	./script/$2_$1.sh $1 $3
 endef
-$(foreach op,$(OPERATIONS),$(foreach env,$(ENVIRONMENTS),$(eval $(call rule_template,$(op),$(env)))))
+
+$(foreach infra,$(LAYERS),$(foreach op,$(OPERATIONS),$(foreach env,$(ENVIRONMENTS),$(eval $(call rule_template,$(infra),$(op),$(env))))))
