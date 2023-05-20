@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+  name: inbox-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+  template:
+    metadata:
+      labels:
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - inbox
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: inbox
+        image: rindrics/gtdapp-inbox:latest
+        env:
+        - name: DB_DRIVER
+          value: postgres
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: inbox-db-secret
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: inbox-db-secret
+              key: password
+        - name: DB_SOURCE
+          value: "host=inbox-db port=5432 dbname=mydb user=$(DB_USERNAME) password=$(DB_PASSWORD) sslmode=disable"
+        - name: ENV
+          value: dummy
+        ports:
+          - containerPort: 50051
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 50051
+          timeoutSeconds: 3
+          initialDelaySeconds: 30
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 250m
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+  name: inbox-db-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gtdapp-inbox-db
+  template:
+    metadata:
+      labels:
+        app: gtdapp-inbox-db
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - inbox-db
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: inbox-db
+        image: postgres:latest
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: inbox-db-secret
+                key: username
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: inbox-db-secret
+                key: password
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: inbox-db-secret
+                key: dbname
+        ports:
+          - containerPort: 5432
+        readinessProbe:
+          exec:
+            command:
+            - bash
+            - "-c"
+            - pg_isready -U $POSTGRES_USER -d $POSTGRES_DB -h 127.0.0.1
+          initialDelaySeconds: 5
+          periodSeconds: 5

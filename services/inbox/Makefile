@@ -1,4 +1,6 @@
 COMMON_PROTODIR=../../common/proto
+VERSION := $$(git describe --tags --always --dirty)
+BRANCH := $$(git symbolic-ref --short HEAD)
 
 .PHONY: gen
 gen:
@@ -16,7 +18,18 @@ gen:
 
 .PHONY: build
 build: cmd internal
-	go build -o app ./cmd
+	Docker build \
+		--platform linux/amd64 \
+		-t rindrics/gtdapp-inbox:${BRANCH} \
+		-t rindrics/gtdapp-inbox:latest \
+		-t rindrics/gtdapp-inbox:${VERSION} \
+		.
+
+.PHONY: push
+push: build
+	Docker push rindrics/gtdapp-inbox:${BRANCH}
+	Docker push rindrics/gtdapp-inbox:latest
+	Docker push rindrics/gtdapp-inbox:${VERSION}
 
 .PHONY: test
 test: cmd internal test/

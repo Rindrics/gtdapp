@@ -131,3 +131,23 @@ graph TB
 | Focus | CRUD of Levels of Focus and management of relation between each level and project |
 | IDP | Management of signup, login and access control |
 
+## How to Deploy Application
+
+This application runs on Kubernetes (k8s) cluster.
+
+#### Required Tools
+
+- [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl): to manage k8s resources
+- [sops](https://github.com/mozilla/sops): to encrypt/decrypt sensitive information
+
+### Deploying infrastructure
+
+Before deploying each micro service, provision k8s cluster first by executing `make infra-{env}-apply`
+
+I configured two environments below:
+- 'dev': provisioned on local machine using [kind](https://kind.sigs.k8s.io/)
+- 'prd': TBD
+
+### Deploying Microservices
+
+You can deploy microservices by executing `make app-{env}-apply`

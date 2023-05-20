@@ -1,0 +1,9 @@
+kind: Kustomization
+bases:
+  - ../../base/
+patches:
+- deployment.yaml
+- ingress.yaml
+- namespace.yaml
+- secret.yaml
+- service.yaml
