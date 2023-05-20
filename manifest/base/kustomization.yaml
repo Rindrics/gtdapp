@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+commonLabels:
+  app: gtdapp
+namespace: gtdapp
+kind: Kustomization
+resources:
+- deployment.yaml
+- ingress.yaml
+- namespace.yaml
+- secret.yaml
+- service.yaml
