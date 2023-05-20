@@ -35,3 +35,11 @@ $1-$3-$2: tffile/environment/$1
 endef
 
 $(foreach infra,$(LAYERS),$(foreach op,$(OPERATIONS),$(foreach env,$(ENVIRONMENTS),$(eval $(call rule_template,$(infra),$(op),$(env))))))
+
+.PHONY: encrypt
+encrypt:
+	sops --encrypt --pgp 533F8603B65864DBD204BDE2F4BB714A72C0C342 manifest/base/secret.yaml > manifest/base/encrypted/secret.yaml
+
+.PHONY: decrypt
+decrypt:
+	sops --decrypt --pgp 533F8603B65864DBD204BDE2F4BB714A72C0C342  manifest/base/encrypted/secret.yaml > manifest/base/secret.yaml
