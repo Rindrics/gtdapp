@@ -10,6 +10,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: gtdapp-inbox
+            name: inbox
             port:
               number: 50051
