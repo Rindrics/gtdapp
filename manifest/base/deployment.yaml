@@ -1,3 +1,36 @@
+# BackBalancer
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+  name: back-balancer
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+  template:
+    metadata:
+      labels:
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - back-balancer
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: back-balancer
+        image: envoyproxy/envoy:v1.26.1
+        ports:
+          - name: web
+            containerPort: 10000
+          - name: admin
+            containerPort: 9901
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
