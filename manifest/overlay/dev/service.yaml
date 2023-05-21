@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: inbox-service
+  name: inbox
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: inbox-db-service
+  name: inbox-db
