@@ -1,5 +1,4 @@
 PROTODIR=../../proto/
-COMMON_PROTODIR=../../common/proto
 GOOGLE_APIS=$(PROTODIR)google/api
 VERSION := $$(git describe --tags --always --dirty)
 BRANCH := $$(git symbolic-ref --short HEAD)
@@ -7,7 +6,7 @@ BRANCH := $$(git symbolic-ref --short HEAD)
 .PHONY: gen
 gen:
 	out_dir=internal; \
-	protoc -I$(PROTODIR) -I$(COMMON_PROTODIR) -I$(GOOGLE_APIS) \
+	protoc -I$(PROTODIR) -I$(GOOGLE_APIS) \
 	--go_out=$$out_dir --go_opt=paths=source_relative \
 	--go-grpc_out=$$out_dir \
 	--go-grpc_opt=paths=source_relative \
@@ -16,12 +15,7 @@ gen:
 	--grpc-gateway_opt paths=source_relative \
 	--openapiv2_out=$$out_dir \
 	--openapiv2_opt logtostderr=true \
-	$(PROTODIR)*.proto; \
-	protoc -I$(COMMON_PROTODIR) -I$(GOOGLE_APIS) \
-	--go_out=$$out_dir --go_opt=paths=source_relative \
-	--go-grpc_out=$$out_dir \
-	--go-grpc_opt=paths=source_relative \
-	$(COMMON_PROTODIR)/*.proto
+	$(PROTODIR)*.proto;
 
 .PHONY: build
 build: cmd internal
