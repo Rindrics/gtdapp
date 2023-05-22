@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package gtd.calendar;
-
-import "common.proto";
-
-service Calendar {
-  rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
-}

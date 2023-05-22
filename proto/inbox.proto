@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package gtd.inbox;
-
-import "common.proto";
-
-service Inbox {
-  rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
-}

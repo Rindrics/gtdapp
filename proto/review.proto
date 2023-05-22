@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package gtd.review;
-
-import "common.proto";
-
-service Review {
-  rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
-}
