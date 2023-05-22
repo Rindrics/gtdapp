@@ -26,7 +26,7 @@ gen:
 # -------
 LAYERS = infra app
 OPERATIONS = plan apply destroy
-ENVIRONMENTS = dev prd
+ENVIRONMENTS = local prd
 
 define rule_template
 .PHONY: $1-$2-$3
