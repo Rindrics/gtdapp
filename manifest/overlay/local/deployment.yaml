@@ -9,4 +9,4 @@ spec:
       - name: inbox
         env:
           - name: ENV
-            value: "dev"
+            value: "local"
