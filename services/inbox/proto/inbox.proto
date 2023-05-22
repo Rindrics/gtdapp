@@ -5,6 +5,7 @@ package gtd.inbox;
 option go_package = "internal/";
 
 import "common.proto";
+import "google/api/annotations.proto";
 
 message Stuff {
   int64 id = 1;
@@ -53,13 +54,35 @@ message DeleteStuffResponse {
 }
 
 service Inbox {
-  rpc Collect (CollectRequest) returns (Stuff) {}
+  rpc Collect (CollectRequest) returns (Stuff) {
+    option (google.api.http) = {
+      post: "/v1/stuff"
+      body: "*"
+    };
+  }
 
-  rpc GetStuff (GetStuffRequest) returns (Stuff) {}
+  rpc GetStuff (GetStuffRequest) returns (Stuff) {
+    option (google.api.http) = {
+      get: "/v1/stuff/{id}"
+    };
+  }
 
-  rpc GetStuffList (GetStuffListRequest) returns (GetStuffListResponse) {}
+  rpc GetStuffList (GetStuffListRequest) returns (GetStuffListResponse) {
+    option (google.api.http) = {
+      get: "/v1/stuffs"
+    };
+  }
 
-  rpc UpdateStuff (UpdateStuffRequest) returns (Stuff) {}
+  rpc UpdateStuff (UpdateStuffRequest) returns (Stuff) {
+    option (google.api.http) = {
+      patch: "/v1/stuff/{id}"
+      body: "*"
+    };
+  }
 
-  rpc DeleteStuff (DeleteStuffRequest) returns (DeleteStuffResponse) {}
+  rpc DeleteStuff (DeleteStuffRequest) returns (DeleteStuffResponse) {
+    option (google.api.http) = {
+      delete: "/v1/stuff/{id}"
+    };
+  }
 }
