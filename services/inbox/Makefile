@@ -1,5 +1,5 @@
 PROTODIR=../../proto/
-GOOGLE_APIS=$(PROTODIR)google/api
+GOOGLE_APIS=$(PROTODIR)google/api/
 VERSION := $$(git describe --tags --always --dirty)
 BRANCH := $$(git symbolic-ref --short HEAD)
 
@@ -15,7 +15,10 @@ gen:
 	--grpc-gateway_opt paths=source_relative \
 	--openapiv2_out=$$out_dir \
 	--openapiv2_opt logtostderr=true \
-	$(PROTODIR)*.proto;
+	$(PROTODIR)common.proto \
+	$(GOOGLE_APIS)http.proto \
+	$(GOOGLE_APIS)annotations.proto \
+	$(PROTODIR)inbox.proto;
 
 .PHONY: build
 build: cmd internal
