@@ -10,6 +10,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: inbox
+            name: route-master
             port:
-              number: 50051
+              number: 8081 # route-master
