@@ -7,6 +7,9 @@ BRANCH := $$(git symbolic-ref --short HEAD)
 gen:
 	out_dir=internal; \
 	protoc -I$(PROTODIR) -I$(GOOGLE_APIS) \
+	--go_out=$$out_dir --go_opt=paths=source_relative \
+	--go-grpc_out=$$out_dir \
+	--go-grpc_opt=paths=source_relative \
 	--grpc-gateway_out=$$out_dir \
 	--grpc-gateway_opt logtostderr=true \
 	--grpc-gateway_opt paths=source_relative \
