@@ -12,4 +12,4 @@ gen:
 	--grpc-gateway_opt paths=source_relative \
 	--openapiv2_out=$$out_dir \
 	--openapiv2_opt logtostderr=true \
-	$(PROTODIR)inbox.proto;
+	$(PROTODIR)*.proto;
