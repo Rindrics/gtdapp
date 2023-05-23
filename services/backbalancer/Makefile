@@ -16,3 +16,18 @@ gen:
 	--openapiv2_out=$$out_dir \
 	--openapiv2_opt logtostderr=true \
 	$(PROTODIR)*.proto;
+
+.PHONY: build
+build: cmd internal
+	Docker build \
+		--platform linux/amd64 \
+		-t rindrics/gtdapp-backbalancer:${BRANCH} \
+		-t rindrics/gtdapp-backbalancer:latest \
+		-t rindrics/gtdapp-backbalancer:${VERSION} \
+		.
+
+.PHONY: push
+push: build
+	Docker push rindrics/gtdapp-backbalancer:${BRANCH}
+	Docker push rindrics/gtdapp-backbalancer:latest
+	Docker push rindrics/gtdapp-backbalancer:${VERSION}
