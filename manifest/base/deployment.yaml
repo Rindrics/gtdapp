@@ -67,6 +67,11 @@ spec:
         env:
         - name: DB_DRIVER
           value: postgres
+        - name: DBNAME
+          valueFrom:
+            secretKeyRef:
+              name: inbox-db
+              key: dbname
         - name: DB_USERNAME
           valueFrom:
             secretKeyRef:
@@ -78,7 +83,7 @@ spec:
               name: inbox-db
               key: password
         - name: DB_SOURCE
-          value: "host=inbox-db port=5432 dbname=mydb user=$(DB_USERNAME) password=$(DB_PASSWORD) sslmode=disable"
+          value: "host=inbox-db port=5432 dbname=$(DBNAME) user=$(DB_USERNAME) password=$(DB_PASSWORD) sslmode=disable"
         - name: ENV
           value: dummy
         ports:
