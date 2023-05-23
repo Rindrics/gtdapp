@@ -1,15 +1,61 @@
+# BackBalancer
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    app: back-balancer
+  name: back-balancer
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: back-balancer
+  template:
+    metadata:
+      labels:
+        app: back-balancer
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - back-balancer
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: back-balancer
+        image: rindrics/gtdapp-backbalancer:latest
+        env:
+        - name: HTTP_PORT
+          value: "8888"
+        - name: GRPC_INSECURE
+          value: "true"
+        - name: GRPC_PORT
+          value: "50051"
+        ports:
+          - name: http
+            containerPort: 8888
+          - name: grpc
+            containerPort: 50051
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: inbox
   name: inbox
 spec:
   replicas: 2
   selector:
     matchLabels:
+      app: inbox
   template:
     metadata:
       labels:
+        app: inbox
     spec:
       affinity:
         podAntiAffinity:
@@ -27,6 +73,11 @@ spec:
         env:
         - name: DB_DRIVER
           value: postgres
+        - name: DBNAME
+          valueFrom:
+            secretKeyRef:
+              name: inbox-db
+              key: dbname
         - name: DB_USERNAME
           valueFrom:
             secretKeyRef:
@@ -38,15 +89,18 @@ spec:
               name: inbox-db
               key: password
         - name: DB_SOURCE
-          value: "host=inbox-db port=5432 dbname=mydb user=$(DB_USERNAME) password=$(DB_PASSWORD) sslmode=disable"
+          value: "host=inbox-db port=5432 dbname=$(DBNAME) user=$(DB_USERNAME) password=$(DB_PASSWORD) sslmode=disable"
         - name: ENV
           value: dummy
         ports:
-          - containerPort: 50051
+          - name: grpc
+            containerPort: 50051
+          - name: health
+            containerPort: 8880
         readinessProbe:
           httpGet:
-            path: /
-            port: 50051
+            path: /health
+            port: 8880
           timeoutSeconds: 3
           initialDelaySeconds: 30
         resources:

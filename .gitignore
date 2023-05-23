@@ -1,4 +1,7 @@
 **/*.pb.go
+**/*.pb.*.go
+**/*.swagger.json
+
 .DS_Store
 app
 **/go-sqlite3

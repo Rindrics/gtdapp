@@ -1,20 +1,16 @@
-COMMON_PROTODIR=../../common/proto
+PROTODIR=../../proto/
 VERSION := $$(git describe --tags --always --dirty)
 BRANCH := $$(git symbolic-ref --short HEAD)
 
 .PHONY: gen
 gen:
 	out_dir=internal; \
-	protoc -Iproto -I$(COMMON_PROTODIR) \
+	protoc -I$(PROTODIR) \
 	--go_out=$$out_dir --go_opt=paths=source_relative \
 	--go-grpc_out=$$out_dir \
 	--go-grpc_opt=paths=source_relative \
-	proto/*.proto; \
-	protoc -I$(COMMON_PROTODIR) \
-	--go_out=$$out_dir --go_opt=paths=source_relative \
-	--go-grpc_out=$$out_dir \
-	--go-grpc_opt=paths=source_relative \
-	$(COMMON_PROTODIR)/*.proto
+	$(PROTODIR)common.proto \
+	$(PROTODIR)inbox.proto;
 
 .PHONY: build
 build: cmd internal

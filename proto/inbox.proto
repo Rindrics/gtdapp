@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package gtd.inbox;
+
+option go_package = "internal/";
+
+import "common.proto";
+import "google/api/annotations.proto";
+
+message Stuff {
+  int64 id = 1;
+  gtd.common.Item item = 2;
+}
+
+message CollectRequest {
+  string title = 1;
+  string description = 2;
+}
+
+message CollectResponse {
+  Stuff stuff = 1;
+}
+
+message GetStuffRequest {
+  int64 id = 1;
+}
+
+message GetStuffListRequest {
+  int64 page = 1;
+  int64 per_page = 2;
+}
+
+message GetStuffListResponse {
+  repeated Stuff stuffs = 1;
+  int64 total = 2;
+}
+
+message UpdateStuffRequest {
+  int64 id = 1;
+  string title = 2;
+  string description = 3;
+}
+
+message UpdateStuffResponse {
+  Stuff stuff = 1;
+}
+
+message DeleteStuffRequest {
+  int64 id = 1;
+}
+
+message DeleteStuffResponse {
+  Stuff stuff = 1;
+}
+
+service Inbox {
+  rpc Collect (CollectRequest) returns (Stuff) {
+    option (google.api.http) = {
+      post: "/inbox/v1/stuff"
+      body: "*"
+    };
+  }
+
+  rpc GetStuff (GetStuffRequest) returns (Stuff) {
+    option (google.api.http) = {
+      get: "/inbox/v1/stuff/{id}"
+    };
+  }
+
+  rpc GetStuffList (GetStuffListRequest) returns (GetStuffListResponse) {
+    option (google.api.http) = {
+      get: "/inbox/v1/stuffs"
+    };
+  }
+
+  rpc UpdateStuff (UpdateStuffRequest) returns (Stuff) {
+    option (google.api.http) = {
+      patch: "/inbox/v1/stuff/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteStuff (DeleteStuffRequest) returns (DeleteStuffResponse) {
+    option (google.api.http) = {
+      delete: "/inbox/v1/stuff/{id}"
+    };
+  }
+}
