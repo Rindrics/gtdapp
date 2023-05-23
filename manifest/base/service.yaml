@@ -7,14 +7,14 @@ spec:
   selector:
     app: back-balancer
   ports:
-    - name: web
+    - name: http
       protocol: TCP
-      port: 10000
-      targetPort: 10000
-    - name: admin
+      port: 8888
+      targetPort: 8888
+    - name: grpc
       protocol: TCP
-      port: 9901
-      targetPort: 9901
+      port: 50051
+      targetPort: 50051
 ---
 apiVersion: v1
 kind: Service

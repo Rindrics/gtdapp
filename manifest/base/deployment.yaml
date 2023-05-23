@@ -24,12 +24,19 @@ spec:
               topologyKey: "kubernetes.io/hostname"
       containers:
       - name: back-balancer
-        image: envoyproxy/envoy:v1.26.1
+        image: rindrics/gtdapp-backbalancer:latest
+        env:
+        - name: HTTP_PORT
+          value: "8888"
+        - name: GRPC_INSECURE
+          value: "true"
+        - name: GRPC_PORT
+          value: "50051"
         ports:
-          - name: web
-            containerPort: 10000
-          - name: admin
-            containerPort: 9901
+          - name: http
+            containerPort: 8888
+          - name: grpc
+            containerPort: 50051
 ---
 apiVersion: apps/v1
 kind: Deployment
