@@ -75,11 +75,14 @@ spec:
         - name: ENV
           value: dummy
         ports:
-          - containerPort: 50051
+          - name: grpc
+            containerPort: 50051
+          - name: health
+            containerPort: 8880
         readinessProbe:
           httpGet:
-            path: /
-            port: 50051
+            path: /health
+            port: 8880
           timeoutSeconds: 3
           initialDelaySeconds: 30
         resources:
