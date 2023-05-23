@@ -56,33 +56,33 @@ message DeleteStuffResponse {
 service Inbox {
   rpc Collect (CollectRequest) returns (Stuff) {
     option (google.api.http) = {
-      post: "/v1/stuff"
+      post: "/inbox/v1/stuff"
       body: "*"
     };
   }
 
   rpc GetStuff (GetStuffRequest) returns (Stuff) {
     option (google.api.http) = {
-      get: "/v1/stuff/{id}"
+      get: "/inbox/v1/stuff/{id}"
     };
   }
 
   rpc GetStuffList (GetStuffListRequest) returns (GetStuffListResponse) {
     option (google.api.http) = {
-      get: "/v1/stuffs"
+      get: "/inbox/v1/stuffs"
     };
   }
 
   rpc UpdateStuff (UpdateStuffRequest) returns (Stuff) {
     option (google.api.http) = {
-      patch: "/v1/stuff/{id}"
+      patch: "/inbox/v1/stuff/{id}"
       body: "*"
     };
   }
 
   rpc DeleteStuff (DeleteStuffRequest) returns (DeleteStuffResponse) {
     option (google.api.http) = {
-      delete: "/v1/stuff/{id}"
+      delete: "/inbox/v1/stuff/{id}"
     };
   }
 }
