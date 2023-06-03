@@ -2,6 +2,7 @@ package internal
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"time"
 
@@ -12,6 +13,7 @@ type StuffRepository interface {
 	Save(s *Stuff) (int64, error)
 	GetStuff(id int64) (*Stuff, error)
 	GetStuffList(page int64, per_page int64) (*GetStuffListResponse, error)
+	UpdateStuff(id int64, title string, description string) (*Stuff, error)
 }
 
 type stuffRepository struct {
@@ -107,4 +109,46 @@ func (r *stuffRepository) GetStuffList(page int64, per_page int64) (*GetStuffLis
 	return &GetStuffListResponse{
 		Stuffs: stuffs,
 	}, nil
+}
+
+func (r *stuffRepository) UpdateStuff(id int64, title string, description string) (*Stuff, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		log.Fatalf("failed to begin transaction: %v", err)
+		return nil, err
+	}
+
+	stmt, err := tx.Prepare("UPDATE stuff SET title = ?, description = ?, updated_at = ? WHERE id = ?")
+	if err != nil {
+		log.Fatalf("failed to prepare statement: %v", err)
+		return nil, err
+	}
+
+	now := time.Now()
+	result, err := stmt.Exec(title, description, now.Format(time.RFC3339), id)
+	if err != nil {
+		log.Fatalf("failed to execute statement: %v", err)
+		return nil, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return nil, fmt.Errorf("no rows updated with id %d", id)
+	}
+
+	s := &Stuff{
+		Id: id,
+		Item: &Item{
+			Title:       title,
+			Description: description,
+			UpdatedAt:   timestamppb.New(now),
+		},
+	}
+
+	tx.Commit()
+
+	return s, nil
 }

@@ -99,3 +99,21 @@ func TestGetCollectedStuffList(t *testing.T) {
 		assert.Equal(t, stuffList.Stuffs[i].Item.Title, title)
 	}
 }
+
+func TestUpdateCollectedStuff(t *testing.T) {
+	s := setupStuff(t)
+
+	ctx := context.Background()
+
+	stuff, err := s.UpdateStuff(ctx, &internal.UpdateStuffRequest{
+		Id:          int64(2),
+		Title:       "Updated title",
+		Description: "Updated description",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, "Updated title", stuff.Item.Title)
+	assert.Equal(t, "Updated description", stuff.Item.Description)
+}
