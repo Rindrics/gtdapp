@@ -41,3 +41,15 @@ func (s *InboxService) GetStuffList(ctx context.Context, req *GetStuffListReques
 
 	return repo.GetStuffList(req.Page, req.PerPage)
 }
+
+func (s *InboxService) UpdateStuff(ctx context.Context, req *UpdateStuffRequest) (*Stuff, error) {
+	repo := NewStuffRepository(s.DB)
+
+	return repo.UpdateStuff(req.Id, req.Title, req.Description)
+}
+
+func (s *InboxService) DeleteStuff(ctx context.Context, req *DeleteStuffRequest) (*Stuff, error) {
+	repo := NewStuffRepository(s.DB)
+
+	return repo.DeleteStuff(req.Id)
+}

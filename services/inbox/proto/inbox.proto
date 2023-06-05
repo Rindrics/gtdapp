@@ -41,10 +41,6 @@ message UpdateStuffRequest {
   string description = 3;
 }
 
-message UpdateStuffResponse {
-  Stuff stuff = 1;
-}
-
 message DeleteStuffRequest {
   int64 id = 1;
 }
@@ -80,7 +76,7 @@ service Inbox {
     };
   }
 
-  rpc DeleteStuff (DeleteStuffRequest) returns (DeleteStuffResponse) {
+  rpc DeleteStuff (DeleteStuffRequest) returns (Stuff) {
     option (google.api.http) = {
       delete: "/inbox/v1/stuff/{id}"
     };

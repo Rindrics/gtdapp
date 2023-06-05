@@ -9,6 +9,7 @@ import (
 	"github.com/Rindrics/gtdapp-spec/services/inbox/internal"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestCollect(t *testing.T) {
@@ -98,4 +99,45 @@ func TestGetCollectedStuffList(t *testing.T) {
 	for i, title := range expectedTitles {
 		assert.Equal(t, stuffList.Stuffs[i].Item.Title, title)
 	}
+}
+
+func TestUpdateCollectedStuff(t *testing.T) {
+	s := setupStuff(t)
+
+	ctx := context.Background()
+
+	stuff, err := s.UpdateStuff(ctx, &internal.UpdateStuffRequest{
+		Id:          int64(2),
+		Title:       "Updated title",
+		Description: "Updated description",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, "Updated title", stuff.Item.Title)
+	assert.Equal(t, "Updated description", stuff.Item.Description)
+}
+
+func TestDeleteCollectedStuff(t *testing.T) {
+	s := setupStuff(t)
+
+	ctx := context.Background()
+
+	stuff, err := s.DeleteStuff(ctx, &internal.DeleteStuffRequest{
+		Id: int64(2),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, int64(2), stuff.Id)
+
+	stuff, err = s.GetStuff(ctx, &internal.GetStuffRequest{
+		Id: int64(2),
+	})
+
+	require := require.New(t)
+	require.Error(err, "Expected an error when getting deleted stuff")
+	require.Nil(stuff, "Expected no stuff to be returned")
 }
