@@ -117,3 +117,27 @@ func TestUpdateSavedStuff(t *testing.T) {
 	assert.Equal(t, "Updated title", updatedStuff.Item.Title)
 	assert.Equal(t, "Updated description", updatedStuff.Item.Description)
 }
+
+func TestDeleteSavedStuff(t *testing.T) {
+	db := setupTestDB(t)
+	repo := internal.NewStuffRepository(db)
+
+	id, err := repo.Save(internal.NewStuff("Test title", "Test description"))
+	if err != nil {
+		t.Fatalf("failed to save stuff: %v", err)
+	}
+
+	_, err = repo.DeleteStuff(
+		int64(id),
+	)
+	if err != nil {
+		t.Fatalf("failed to delete stuff: %v", err)
+	}
+
+	_, err = repo.GetStuff(id)
+	if err == nil {
+		t.Fatalf("stuff should be deleted")
+	}
+
+	assert.Equal(t, "stuff not found", err.Error())
+}

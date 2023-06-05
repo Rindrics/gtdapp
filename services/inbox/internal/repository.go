@@ -14,6 +14,7 @@ type StuffRepository interface {
 	GetStuff(id int64) (*Stuff, error)
 	GetStuffList(page int64, per_page int64) (*GetStuffListResponse, error)
 	UpdateStuff(id int64, title string, description string) (*Stuff, error)
+	DeleteStuff(id int64) (*Stuff, error)
 }
 
 type stuffRepository struct {
@@ -68,6 +69,9 @@ func (r *stuffRepository) GetStuff(id int64) (*Stuff, error) {
 	var createdAt, updatedAt time.Time
 	err := row.Scan(&s.Id, &s.Item.Title, &s.Item.Description, &createdAt, &updatedAt)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("stuff not found")
+		}
 		log.Printf("failed to execute query: %v", err)
 		return nil, err
 	}
@@ -146,6 +150,42 @@ func (r *stuffRepository) UpdateStuff(id int64, title string, description string
 			Description: description,
 			UpdatedAt:   timestamppb.New(now),
 		},
+	}
+
+	tx.Commit()
+
+	return s, nil
+}
+
+func (r *stuffRepository) DeleteStuff(id int64) (*Stuff, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		log.Fatalf("failed to begin transaction: %v", err)
+		return nil, err
+	}
+
+	stmt, err := tx.Prepare("DELETE FROM stuff WHERE id = ?")
+	if err != nil {
+		log.Fatalf("failed to prepare statement: %v", err)
+		return nil, err
+	}
+
+	result, err := stmt.Exec(id)
+	if err != nil {
+		log.Fatalf("failed to execute statement: %v", err)
+		return nil, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return nil, fmt.Errorf("no rows deleted with id %d", id)
+	}
+
+	s := &Stuff{
+		Id: id,
 	}
 
 	tx.Commit()
