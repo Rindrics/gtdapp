@@ -15,3 +15,8 @@ gen:
 test:
 	@echo "Running tests..."
 	@npm test
+
+.PHONY: build
+build:
+	@echo "Building..."
+	@npm run build
