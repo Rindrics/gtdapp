@@ -10,3 +10,8 @@ gen:
 	    --plugin=protoc-gen-ts=`pwd`/node_modules/.bin/protoc-gen-ts \
 	    --ts_out=service=grpc-web:./src/generated \
 	    $(PROTODIR)/projectmanager.proto
+
+.PHONY: test
+test:
+	@echo "Running tests..."
+	@npm test
