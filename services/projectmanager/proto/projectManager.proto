@@ -2,10 +2,24 @@ syntax = "proto3";
 
 package gtd.project;
 
-option go_package = "api/gen/api";
+import "google/api/annotations.proto";
 
-import "common.proto";
+service ProjectManager {
+  rpc OrganizeAsProject (OrganizeAsProjectRequest) returns (Project) {
+    option (google.api.http) = {
+      post: "/v1/projects"
+      body: "*"
+    };
+  }
+}
 
-service Project {
-  rpc GetServiceName (gtd.common.Empty) returns (gtd.common.ServiceNameResponse) {}
+message OrganizeAsProjectRequest {
+  string title = 1;
+  string description = 2;
+}
+
+message Project {
+        int64 id = 1;
+        string title = 2;
+        string description = 3;
 }
