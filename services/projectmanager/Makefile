@@ -15,6 +15,11 @@ gen:
 	    $(COMMONDIR)/google/api/http.proto \
 	    $(PROTODIR)/projectmanager.proto
 
+.PHONY: clean
+clean:
+	@echo "Cleaning..."
+	@rm -rf ./src/generated/*
+
 .PHONY: test
 test:
 	@echo "Running tests..."
