@@ -80,56 +80,22 @@ This app can scale out components that restrict the overall throughput.
 The architecture of this application is Microservice Architecture
 
 ```mermaid
-graph TB
-    User[User]-->Frontend
-    Frontend[Web and Mobile Frontend]-->RouteMaster
-    RouteMaster --> IDP
-    IDP --> RouteMaster
-    RouteMaster --> JWT
-    JWT
+graph TD
+  FE["Frontend (GraphQL client) [React]"]
+  APIG["API Gateway (GraphQL Server) [Node.js + Express.js + Apollo Server]"]
+  gRPCG["gRPC Gateway [Go]"]
+  IMS["Item Management Service [Haskell]"]
+  DBC["DB Consumer Service [Rust]"]
+  KF{Kafka}
+  DB["Database [MongoDB]"]
 
-    RouteMaster --> BackBalancer
-    BackBalancer --> Checklist
-    BackBalancer --> Clarify
-    Clarify --> Checklist
-    Clarify --> Inbox
-    Clarify --> Reference
-    Clarify --> Project
-    Clarify --> Calendar
-    Project --> Task
-    BackBalancer --> Task
-    BackBalancer --> Project
-    BackBalancer --> Reference
-    BackBalancer --> Review
-    Review --> Focus
-    BackBalancer --> Focus
-    BackBalancer --> Inbox
-    Project --> Focus
-
-    Clarify --> ClarifyBroker
-    ClarifyBroker --> Inbox
-    ClarifyBroker --> Project
-    ClarifyBroker --> Task
-
-    classDef services fill:#2288f9,stroke:#333,stroke-width:1px;
-    class RouteMaster,BackBalancer,IDP,Frontend,Checklist,Clarify,ClarifyBroker,Inbox,Reference,Project,Task,Review,Focus,Calendar services;
-    classDef tools fill:#858585,stroke:#333,stroke-width:1px;
-    class JWT tools
+  FE --> APIG
+  APIG --> gRPCG
+  gRPCG --> IMS
+  IMS --> KF
+  DBC --> KF
+  DBC --> DB
 ```
-
-
-| Name of service | Responsibility |
-| --- | --- |
-| Inbox | CRUD of Inbox items |
-| Clarify | Assignment of each Inbox item to single category (e.g.: 'Projects', 'References', 'Someday/maybe') |
-| Checklist | CRUD of user-defined checklists |
-| Reference | CRUD of reference items |
-| Calendar | Integration with Google Calendar |
-| Project | CRUD of projects and management of their child tasks; Collaboration management (e.g.: user invitation, access management) |
-| Task | CRUD of tasks; Collaboration management (e.g.: task assignment) |
-| Review | CRUD of reviews |
-| Focus | CRUD of Levels of Focus and management of relation between each level and project |
-| IDP | Management of signup, login and access control |
 
 ## How to Deploy Application
 
