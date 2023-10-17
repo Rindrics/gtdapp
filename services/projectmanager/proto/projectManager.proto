@@ -5,7 +5,7 @@ package gtd.project;
 import "google/api/annotations.proto";
 
 service ProjectManager {
-  rpc OrganizeAsProject (OrganizeAsProjectRequest) returns (Project) {
+  rpc CreateProject (CreateProjectRequest) returns (Project) {
     option (google.api.http) = {
       post: "/v1/projects"
       body: "*"
@@ -13,7 +13,7 @@ service ProjectManager {
   }
 }
 
-message OrganizeAsProjectRequest {
+message CreateProjectRequest {
   string title = 1;
   string description = 2;
 }

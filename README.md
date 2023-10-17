@@ -94,25 +94,25 @@ graph TB
     Clarify --> Checklist
     Clarify --> Inbox
     Clarify --> Reference
-    Clarify --> Project
+    Clarify --> ProjectManager
     Clarify --> Calendar
-    Project --> Task
+    ProjectManager --> Task
     BackBalancer --> Task
-    BackBalancer --> Project
+    BackBalancer --> ProjectManager
     BackBalancer --> Reference
     BackBalancer --> Review
     Review --> Focus
     BackBalancer --> Focus
     BackBalancer --> Inbox
-    Project --> Focus
+    ProjectManager --> Focus
 
     Clarify --> ClarifyBroker
     ClarifyBroker --> Inbox
-    ClarifyBroker --> Project
+    ClarifyBroker --> ProjectManager
     ClarifyBroker --> Task
 
     classDef services fill:#2288f9,stroke:#333,stroke-width:1px;
-    class RouteMaster,BackBalancer,IDP,Frontend,Checklist,Clarify,ClarifyBroker,Inbox,Reference,Project,Task,Review,Focus,Calendar services;
+    class RouteMaster,BackBalancer,IDP,Frontend,Checklist,Clarify,ClarifyBroker,Inbox,Reference,ProjectManager,Task,Review,Focus,Calendar services;
     classDef tools fill:#858585,stroke:#333,stroke-width:1px;
     class JWT tools
 ```

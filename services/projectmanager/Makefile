@@ -8,9 +8,10 @@ gen:
 	grpc_tools_node_protoc \
 	    -I$(COMMONDIR) -I$(PROTODIR) \
 	    --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts \
-	    --ts_out=service=true:./src/generated \
+	    --plugin=protoc-gen-grpc=node_modules/.bin/grpc_tools_node_protoc_plugin \
+	    --ts_out=service=grpc-node:./src/generated \
 	    --js_out=import_style=commonjs,binary:./src/generated \
-	    --grpc_out=./src/generated \
+	    --grpc_out=:./src/generated \
 	    $(COMMONDIR)/google/api/annotations.proto \
 	    $(COMMONDIR)/google/api/http.proto \
 	    $(PROTODIR)/projectmanager.proto

@@ -45,3 +45,8 @@ ls:
 call:
 	grpc_cli call localhost:50051 gtd.inbox.Inbox.Collect \
 	'title: "Hello, world" description: "Greet to the world"'
+
+.PHONY: doc
+doc:
+	protoc -I$(PROTODIR) -I$(COMMONDIR) -I$(GOOGLE_APIS) \
+	--doc_out=. --doc_opt=markdown,api.md $(PROTODIR)/inbox.proto

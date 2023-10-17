@@ -10,6 +10,6 @@ terraform {
 module "kind_dev_cluster" {
   source                 = "../../../module/infra/"
   environment            = "dev"
-  host_ingress_port_http = 8080
+  host_ingress_port_http = 8081
   host_ingress_port_ssh  = 8443
 }
